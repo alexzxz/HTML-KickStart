@@ -3,16 +3,25 @@
 	kickstart.js
 */
 
-jQuery(document).ready(function($){
+jQuery(document).ready(function($) {
+  doKickStart();
+ });
 
+
+/**
+* Does all the nice kickstart magic :)
+* Call this when U loaded something with ajax and all the new HTML will be kickstarted.
+*/
+function doKickStart(){
+	
 	/*---------------------------------
 		MENU Dropdowns
 	-----------------------------------*/
-	$('ul.menu').each(function(){
+	$('ul.menu:not(.kickstarted)').each(function(){
 		// find menu items with children.
 		$(this).find('li').has('ul').addClass('has-menu')
 		.append('<span class="arrow">&nbsp;</span>');
-	});
+	}).addClass('kickstarted');
 	
 	$('ul.menu li').hover(function(){
 		$(this).find('ul:first').stop(true, true).fadeIn('fast');
@@ -37,7 +46,7 @@ jQuery(document).ready(function($){
 		Slideshow
 	-----------------------------------*/
 	// setup
-	$('ul.slideshow').wrap('<div class="slideshow-wrap"><div class="slideshow-inner"></div></div>')
+	$('ul.slideshow:not(.kickstarted)').wrap('<div class="slideshow-wrap"><div class="slideshow-inner"></div></div>')
 	.each(function(){
 		var wrap = $(this).parents('.slideshow-wrap');
 		var inner = $(this).parents('.slideshow-inner');
@@ -81,7 +90,7 @@ jQuery(document).ready(function($){
 			var next = slideshow.find('li').eq(link);
 			KSslideshow(slideshow, next);
 		});
-	});
+	}).addClass('kickstarted');
 	
 	// run slideshow
 	function KSslideshow(slideshow, next){
@@ -115,32 +124,32 @@ jQuery(document).ready(function($){
 	/*---------------------------------
 		HTML5 Placeholder Support
 	-----------------------------------*/
-	$('input[placeholder], textarea[placeholder]').placeholder();
+	$('input[placeholder]:not(.kickstarted), textarea[placeholder]:not(.kickstarted)').placeholder().addClass('kickstarted');
 	
 	/*---------------------------------
 		SELECT MENUS - CHOSEN
 	-----------------------------------*/
-	$('select.fancy').chosen();
+	$('select.fancy:not(.kickstarted)').chosen().addClass('kickstarted');
 	
 	/*---------------------------------
 		MEDIA
 	-----------------------------------*/
 	// video placeholder
-	$('a.video-placeholder').each(function(){
+	$('a.video-placeholder:not(.kickstarted)').each(function(){
 		$(this).append('<span class="icon x-large white" data-icon="&nbsp;"></span>');
-	});
+	}).addClass('kickstarted');
 	
 	// calendar
-	$('.calendar').each(function(){
+	$('.calendar:not(.kickstarted)').each(function(){
 		if($(this).attr('data-month')) { cMonth = $(this).attr('data-month'); }
 		if($(this).attr('data-year')) { cYear = $(this).attr('data-year'); }
 		$(this).calendarWidget({month:cMonth, year: cYear});
-	});
+	}).addClass('kickstarted');
 	
 	/*---------------------------------
 		Rich Text Editor
 	-----------------------------------*/
-	$('.rte').each(function(index){
+	$('.rte:not(.kickstarted)').each(function(index){
 		var newID = $(this).attr('id')+index;
 		$(this).hide();
 		$(this).wrap('<div id="'+newID+'" class="rte-wrap editmode"></div>');
@@ -180,7 +189,7 @@ jQuery(document).ready(function($){
 		var editor = '<div class="rte-editor" style="height:'+rhtml.innerHeight()+'px" contenteditable="true"></div>';
 		wrap.prepend(toolbar+editor);
 		wrap.find('.rte-editor').html(rhtml.val());
-	});
+	}).addClass('kickstarted');
 	
 	// buttons
 	$('.rte-wrap .rte-toolbar a').live('click',function(e){
@@ -222,31 +231,31 @@ jQuery(document).ready(function($){
 	/*---------------------------------
 		Fancybox Lightbox
 	-----------------------------------*/
-	$('.gallery').each(function(i){
+	$('.gallery:not(.kickstarted)').each(function(i){
 		$(this).find('a').attr('rel', 'gallery'+i)
 		.fancybox({
 			overlayOpacity: 0.2,
 			overlayColor: '#000'
 		});
-	});
+	}).addClass('kickstarted');
 	
 	// lightbox links
-	$('a.lightbox').fancybox({
+	$('a.lightbox:not(.kickstarted)').fancybox({
 		overlayOpacity: 0.2,
 		overlayColor: '#000'
-	});
+	}).addClass('kickstarted');
 	
 	/*---------------------------------
 		Tabs
 	-----------------------------------*/
 	// tab setup
-	$('.tab-content').addClass('clearfix').not(':first').hide();
-	$('ul.tabs').each(function(){
+	$('.tab-content:not(.kickstarted)').addClass('clearfix').not(':first').hide().addClass('kickstarted');
+	$('ul.tabs:not(.kickstarted)').each(function(){
 		var current = $(this).find('li.current');
 		if(current.length < 1) { $(this).find('li:first').addClass('current'); }
 		current = $(this).find('li.current a').attr('href');
 		$(current).show();
-	});
+	}).addClass('kickstarted');
 	
 	// tab click
 	$('ul.tabs a[href^="#"]').live('click', function(e){
@@ -264,7 +273,7 @@ jQuery(document).ready(function($){
 	/*---------------------------------
 		Image Style Helpers
 	-----------------------------------*/
-	$('img.style1, img.style2, img.style3').each(function(){
+	$('img.style1:not(.kickstarted), img.style2:not(.kickstarted), img.style3:not(.kickstarted)').each(function(){
 		$(this).wrap('<span>');
 		$(this).parent('span')
 			.attr('class', 'img-wrap '+$(this).attr('class'))
@@ -274,12 +283,12 @@ jQuery(document).ready(function($){
 			.css('height', $(this).height())
 			.css('width', $(this).width());
 		$(this).attr('class','').hide();
-	});
+	}).addClass('kickstarted');
 	
 	/*---------------------------------
 		Image Caption
 	-----------------------------------*/
-	$('img.caption').each(function(){
+	$('img.caption:not(.kickstarted)').each(function(){
 		$(this).wrap('<div class="caption">');
 		$(this).parents('div.caption')
 			.attr('class', 'caption '+$(this).attr('class'))
@@ -288,7 +297,7 @@ jQuery(document).ready(function($){
 			$(this).parents('div.caption')
 			.append('<span>'+$(this).attr('title')+'</span>');
 		}
-	});
+	}).addClass('kickstarted');
 	
 	/*---------------------------------
 		Notice
@@ -305,7 +314,7 @@ jQuery(document).ready(function($){
 	-----------------------------------*/	
 	
 	// Standard tooltip
-	$('.tooltip, .tooltip-top, .tooltip-bottom, .tooltip-right, .tooltip-left').each(function(){
+	$('.tooltip:not(.kickstarted), .tooltip-top:not(.kickstarted), .tooltip-bottom:not(.kickstarted), .tooltip-right:not(.kickstarted), .tooltip-left:not(.kickstarted)').each(function(){
 		// variables 
 		var tpos = 'top';
 		var content = $(this).attr('title');
@@ -329,17 +338,17 @@ jQuery(document).ready(function($){
 		// tooltip
 		$(this).attr('title','')
 		.tipTip({defaultPosition: tpos, content: content, keepAlive: keepAlive, activation: action, delay: 1000});
-	});
+	}).addClass('kickstarted');
 	
 	/*---------------------------------
 		Table Sort
 	-----------------------------------*/
 	// init
 	var aAsc = [];
-	$('table.sortable').each(function(){
+	$('table.sortable:not(.kickstarted)').each(function(){
 		$(this).find('thead th').each(function(index){$(this).attr('rel', index);});
 		$(this).find('th,td').each(function(){$(this).attr('value', $(this).text());});
-	});
+	}).addClass('kickstarted');
 
 	// table click
 	$('table.sortable thead th').live('click', function(e){
@@ -367,10 +376,10 @@ jQuery(document).ready(function($){
 	/*---------------------------------
 		Icons
 	-----------------------------------*/
-	$('.icon').each(function(){
+	$('.icon:not(.kickstarted)').each(function(){
 		$(this).append('<span aria-hidden="true">'+$(this).attr('data-icon')+'</span>')
 		.css('display', 'inline-block');
-	});
+	}).addClass('kickstarted');
 	
 	/*---------------------------------
 		CSS Helpers
@@ -395,7 +404,7 @@ jQuery(document).ready(function($){
 	  );
 	$('pre').addClass('prettyprint');prettyPrint();
 	
-});
+}
 
 /**
  * jQuery.LocalScroll - Animated scrolling navigation, using anchors.
